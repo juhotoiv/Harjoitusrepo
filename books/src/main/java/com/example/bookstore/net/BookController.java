@@ -1,6 +1,7 @@
 package com.example.bookstore.net;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import com.example.bookstore.domain.*;
 
@@ -26,6 +27,12 @@ public class BookController {
 	public String index() {
 		return "index";
 	}
+	
+	// login functionality
+	@RequestMapping(value="/login")
+    public String login() {	
+        return "login";
+    }
 
 	// Show all books
 	@RequestMapping("/booklist")
@@ -62,6 +69,7 @@ public class BookController {
 	}
 	
 	// Delete book
+	@PreAuthorize("hasAuthority('ADMIN')")
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
 	public String deleteBook(@PathVariable("id") Long bookId, Model model) {
 	brepository.deleteById(bookId);
